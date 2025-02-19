@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app/app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { ConfigService } from './context/common/domain/config-service'
 import { AllExceptionFilter } from './app/filter/exception.filter'
+import { ConfigService } from './context/common/infrastructure/services/config.service'
 
 export function getErrorMessage(error: any): string | null {
   if (error.constraints) {

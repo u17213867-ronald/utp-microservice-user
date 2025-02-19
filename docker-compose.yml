@@ -15,11 +15,11 @@ services:
       - ~/.aws/:/app/.aws/:rw
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.demo.rule=PathPrefix(`/v2/demo`)"
+      - "traefik.http.routers.demo.rule=PathPrefix(`/v1/advertisement`)"
       - "traefik.http.services.demo.loadbalancer.server.port=80"
     networks:
-      - neo_network
+      - utp_network
 
 networks:
-  neo_network:
+  utp_network:
     external: true

@@ -18,11 +18,11 @@ push-container-config: ##@Global Push container enviroment file to S3
 build: ##@Global Build docker image
 	@docker build -f docker/local/Dockerfile --no-cache -t $(LOCAL_DOCKER_IMAGE) ./docker
 
-command: ##@Global install dependencies. make command PACKAGED=""
-	@docker container run --workdir "/$(APP_DIR)" --rm -i \
+command: ##@Global install dependencies. make command PACKAGED="dotenv-expand"
+	docker container run --workdir "/$(APP_DIR)" --rm -i \
 		-v "$(PWD)/$(APP_DIR)":/$(APP_DIR) \
 		${LOCAL_DOCKER_IMAGE} \
-		pnpm $(PACKAGED)
+		pnpm add $(PACKAGED)
 
 install: ##@Global install dependencies
 	@docker container run --workdir "/$(APP_DIR)" --rm -i \
