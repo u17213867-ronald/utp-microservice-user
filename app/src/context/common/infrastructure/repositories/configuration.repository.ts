@@ -14,6 +14,7 @@ export class ConfigurationRepository implements IConfigurationRepository {
     private readonly redisService: RedisService,
     private readonly configService: ConfigService,
   ) {
+    sequelize.addModels([ConfigurationModel])
     this.repository = sequelize.getRepository(ConfigurationModel)
   }
 

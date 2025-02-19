@@ -8,6 +8,8 @@ import { ConfigurationRepository } from './repositories/configuration.repository
 export const MODELS = [
   ConfigurationModel  
 ]
+console.log(ConfigurationModel)
+
 export const DATABASE_PROVIDER = {
   provide: 'SEQUELIZE',
   useFactory: async (config: ConfigService) => {
@@ -29,8 +31,7 @@ export const DATABASE_PROVIDER = {
         timestamps: false,
       },
     })
-
-    sequelize.addModels(MODELS)
+    //sequelize.addModels(MODELS)
     await sequelize.sync()
 
     return sequelize
