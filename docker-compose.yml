@@ -1,0 +1,24 @@
+services:
+  backend:
+    image: $DOCKER_IMAGE
+    container_name: $CONTAINER_NAME
+    environment:
+      HOME: /app
+      AWS_SDK_LOAD_NONDEFAULT_CONFIG: 1
+      AWS_CONFIG_FILE: /app/.aws/config
+      AWS_PROFILE: dev
+      AWS_SDK_LOAD_CONFIG: 1
+    working_dir: /app
+    volumes:
+      - ./app:/app/:rw
+      - ~/.aws/:/app/.aws/:rw
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.user.rule=PathPrefix(`/v1/user`)"
+      - "traefik.http.services.user.loadbalancer.server.port=80"
+    networks:
+      - utp_network
+
+networks:
+  utp_network:
+    external: true
