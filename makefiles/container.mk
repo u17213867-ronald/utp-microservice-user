@@ -65,7 +65,9 @@ create-seed: ##@Global Create migration make create-migration MIGRATION=create-s
 	make container-run COMMAND="sequelize seed:generate --name $(MIGRATION)"
 
 migrate: ##@Global Run migrations
-	@echo "migraciones $(APP_ENV)"
+	make container-run COMMAND="sequelize db:create"
+	make container-run COMMAND="sequelize db:migrate"
+	make container-run COMMAND="sequelize db:seed:all"
 
 migrate-rollback: ##@Global Undo migration
 	make container-run COMMAND="sequelize db:migrate:undo"

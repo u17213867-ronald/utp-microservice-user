@@ -5,10 +5,13 @@ import { RedisService } from './services/redis.service'
 import { ConfigurationModel } from './models/configuration.model'
 import { IConfigurationRepository } from '../domain/interfaces/configuration.interface'
 import { ConfigurationRepository } from './repositories/configuration.repository'
+import { TokenService } from './services/token.service'
+import { JwtService } from '@nestjs/jwt';
+import { TokenServiceRepository } from '../domain/interfaces/token.service.interface'
+
 export const MODELS = [
-  ConfigurationModel  
+  ConfigurationModel
 ]
-console.log(ConfigurationModel)
 
 export const DATABASE_PROVIDER = {
   provide: 'SEQUELIZE',
@@ -31,7 +34,8 @@ export const DATABASE_PROVIDER = {
         timestamps: false,
       },
     })
-    //sequelize.addModels(MODELS)
+    
+    sequelize.addModels(MODELS)
     await sequelize.sync()
 
     return sequelize
@@ -64,6 +68,18 @@ export const CONFIGURATION_REPOSITORY_PROVIDER = {
   },
 }
 
+export const TOKEN_REPOSITORY_PROVIDER = {
+  inject: [JwtService],
+  provide: TokenServiceRepository,
+  useFactory: async (jwt: JwtService) => {
+    return new TokenService(jwt)
+  },
+}
 
+export const INFRASTRUCTURE = [
+  DATABASE_PROVIDER,
+  REDIS_PROVIDER,
+  CONFIGURATION_REPOSITORY_PROVIDER,
+  TOKEN_REPOSITORY_PROVIDER
+]
 
-export const INFRASTRUCTURE = [DATABASE_PROVIDER, REDIS_PROVIDER, CONFIGURATION_REPOSITORY_PROVIDER]

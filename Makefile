@@ -3,9 +3,9 @@
 .EXPORT_ALL_VARIABLES:
 
 ## APP VARS ##
-OWNER             = proyect
+OWNER             = utp
 SERVICE_TYPE      = microservice
-SERVICE_NAME      = advertisement
+SERVICE_NAME      = user
 VERSION      	  = v1
 APP_NAME          = $(SERVICE_TYPE)-$(SERVICE_NAME)
 DOCKER_NETWORK    ?= utp_network

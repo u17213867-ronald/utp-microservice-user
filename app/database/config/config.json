@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "123456",
+    "database": "db_siri_talent_finder",
+    "host": "services_mysql8",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": "123456",
+    "database": "db_siri_talent_finder",
+    "host": "services_mysql8",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "123456",
+    "database": "db_siri_talent_finder",
+    "host": "services_mysql8",
+    "dialect": "mysql"
+  }
+}

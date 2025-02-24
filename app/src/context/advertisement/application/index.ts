@@ -1,1 +1,0 @@
-// advertisement module entry point

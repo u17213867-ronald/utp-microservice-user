@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app/app.module'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
-import { AllExceptionFilter } from './app/filter/exception.filter'
+import { ExceptionsFilter } from './app/filter/exception.filter'
 import { ConfigService } from './context/common/infrastructure/services/config.service'
+import { HttpStatus, ValidationPipe } from '@nestjs/common'
+import { CustomException } from './context/common/application/exceptions/custom.exception'
+import { RequestInterceptor } from './app/interceptor/request.interceptor'
+import { ResponseInterceptor } from './app/interceptor/response.interceptor'
+import { LoggerInterceptor } from './app/interceptor/logger.interceptor'
 
 export function getErrorMessage(error: any): string | null {
   if (error.constraints) {
@@ -21,8 +26,27 @@ export function getErrorMessage(error: any): string | null {
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  app.useGlobalFilters(new AllExceptionFilter())
+  const app = await NestFactory.create(AppModule, {
+    bufferLogs: true,
+  })
+
+  app.useGlobalInterceptors(new RequestInterceptor(), new ResponseInterceptor(), new LoggerInterceptor())
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        const trace = errors.map((error) => ({          
+          property: error.property,
+          message: getErrorMessage(error) ?? 'Unknown error',
+        }))
+        return new CustomException('Bad request parameters.', HttpStatus.BAD_REQUEST, trace, trace)
+      },
+      whitelist: true,
+      transform: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
+  app.useGlobalFilters(new ExceptionsFilter())
+
   const config: any = app.get(ConfigService)
   const name: string = config.get('APP_NAME')
   const version: string = config.get('APP_VERSION')

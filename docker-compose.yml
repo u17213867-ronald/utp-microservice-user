@@ -15,8 +15,8 @@ services:
       - ~/.aws/:/app/.aws/:rw
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.demo.rule=PathPrefix(`/v1/advertisement`)"
-      - "traefik.http.services.demo.loadbalancer.server.port=80"
+      - "traefik.http.routers.user.rule=PathPrefix(`/v1/user`)"
+      - "traefik.http.services.user.loadbalancer.server.port=80"
     networks:
       - utp_network
 
